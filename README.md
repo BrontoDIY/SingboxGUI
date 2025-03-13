@@ -1,4 +1,4 @@
-﻿![SingBoxGUI](Assets/icon.png)
+![SingBoxGUI](https://github.com/user-attachments/assets/edbefb1d-4c98-4bb3-a8f4-f2def69692a5)
 
 # SingBoxGUI
 
