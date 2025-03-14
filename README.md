@@ -1,4 +1,4 @@
-![SingBoxGUI](https://github.com/user-attachments/assets/edbefb1d-4c98-4bb3-a8f4-f2def69692a5)
+![SingBoxGUI](https://github.com/user-attachments/assets/b8a5d293-2b10-4cf5-afe0-5be6c04ae99e)
 
 # SingBoxGUI
 
@@ -13,6 +13,7 @@ SingBoxGUI is a graphical user interface for [Sing-box](https://sing-box.sagerne
 - View real-time logs in an embedded WebView.
 - Minimize to system tray with quick access controls.
 - Automatically clear proxy settings upon exit.
+- **Check for Sing-box updates**: Compares the local version with the latest version from GitHub (currently v1.11.5) and notifies users when an update is available.
 
 ### Installation:
 1. Download the latest release from the [GitHub Releases](https://github.com/BrontoDIY/SingBoxGUI/releases) page.
@@ -40,6 +41,7 @@ SingBoxGUI یک رابط گرافیکی برای [Sing-box](https://sing-box.sag
 - مشاهده لاگ‌ها به‌صورت زنده در WebView داخلی.
 - امکان مینیمایز کردن برنامه در System Tray همراه با کنترل سریع.
 - پاکسازی خودکار تنظیمات پروکسی هنگام خروج.
+- **بررسی آپدیت‌های Sing-box**: مقایسه نسخه محلی با آخرین نسخه از GitHub (در حال حاضر v1.11.5) و اطلاع‌رسانی به کاربران هنگام وجود نسخه جدید.
 
 ### نحوه نصب:
 1. آخرین نسخه را از صفحه [Releases](https://github.com/BrontoDIY/SingBoxGUI/releases) دانلود کنید.
@@ -52,4 +54,4 @@ SingBoxGUI یک رابط گرافیکی برای [Sing-box](https://sing-box.sag
 - نصب بودن WebView2 Runtime
 
 ### مشارکت در توسعه:
-در صورت تمایل، می‌توانید مخزن را fork کرده، تغییرات خود را اعمال کرده و pull request
+در صورت تمایل، می‌توانید مخزن را fork کرده، تغییرات خود را اعمال کرده و pull request ارسال کنید.
