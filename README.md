@@ -1,4 +1,4 @@
-![SingBoxGUI](https://github.com/user-attachments/assets/edbefb1d-4c98-4bb3-a8f4-f2def69692a5)
+![SingBoxGUI](https://github.com/user-attachments/assets/b8a5d293-2b10-4cf5-afe0-5be6c04ae99e)
 
 # SingBoxGUI
 
