@@ -27,6 +27,7 @@
                 <!--  For the TextBox to occupy most of the space  -->
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <!--  For the Button to take only the necessary space  -->
             </Grid.ColumnDefinitions>
 
@@ -60,7 +61,16 @@
                 Height="25"
                 Margin="5"
                 Click="CheckForSingboxUpdate_Click"
-                Content="Check Singbox Update" />
+                Content="Sing-box Core Update" />
+
+            <Button
+                x:Name="showAboutMessage"
+                Grid.Column="3"
+                Width="120"
+                Margin="30,5,5,5"
+                Click="ShowAboutMessage"
+                Content="About" />
+
             <!--  Placeholder text aligned to the left  -->
             <TextBlock
                 x:Name="txtPlaceholder"
@@ -115,12 +125,6 @@
                     Click="RunCommand"
                     Content="Run Command" />
             </StackPanel>
-            <Button
-                x:Name="showAboutMessage"
-                Width="120"
-                Margin="30,5,5,5"
-                Click="ShowAboutMessage"
-                Content="About" />
         </StackPanel>
 
         <!--  WebView2 Control  -->
