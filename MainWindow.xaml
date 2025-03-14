@@ -26,6 +26,7 @@
                 <ColumnDefinition Width="*" />
                 <!--  For the TextBox to occupy most of the space  -->
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <!--  For the Button to take only the necessary space  -->
             </Grid.ColumnDefinitions>
 
@@ -52,6 +53,14 @@
                 Click="UpdateConfig"
                 Content="Get Config" />
 
+            <Button
+                x:Name="btnCheckForSingbox"
+                Grid.Column="2"
+                Width="140"
+                Height="25"
+                Margin="5"
+                Click="CheckForSingboxUpdate_Click"
+                Content="Check Singbox Update" />
             <!--  Placeholder text aligned to the left  -->
             <TextBlock
                 x:Name="txtPlaceholder"

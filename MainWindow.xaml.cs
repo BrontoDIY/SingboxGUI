@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -491,6 +492,165 @@ namespace SingboxGUI
             // Set the window content
             aboutWindow.Content = panel;
             aboutWindow.ShowDialog(); // Show the window as a modal dialog
+        }
+
+        private async void CheckForSingboxUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            string githubReleasesUrl =
+                "https://github.com/SagerNet/sing-box/releases/latest/download/";
+            string localVersion = GetLocalSingboxVersion();
+
+            Debug.WriteLine("Local version: " + localVersion);
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0");
+                    HttpResponseMessage response = await client.GetAsync(githubReleasesUrl);
+                    string finalUrl = response.RequestMessage.RequestUri.ToString(); // Redirect URL
+
+                    string latestVersion = ExtractVersionFromUrl(finalUrl);
+                    Debug.WriteLine("Latest version from GitHub: " + latestVersion);
+
+                    if (string.IsNullOrEmpty(latestVersion))
+                    {
+                        Debug.WriteLine("Could not extract version from GitHub.");
+                        return;
+                    }
+
+                    if (!string.IsNullOrEmpty(localVersion) && localVersion != latestVersion)
+                    {
+                        MessageBoxResult result = System.Windows.MessageBox.Show(
+                            $"A new version ({latestVersion}) is available. Do you want to update?",
+                            "Sing-box Update",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Information
+                        );
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            Process.Start(
+                                new ProcessStartInfo
+                                {
+                                    FileName =
+                                        "https://github.com/SagerNet/sing-box/releases/latest",
+                                    UseShellExecute = true,
+                                }
+                            );
+                        }
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show(
+                            "You already have the latest version.",
+                            "No Update Needed",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error checking for updates: " + ex.Message);
+                Debug.WriteLine("Stack Trace: " + ex.StackTrace);
+            }
+        }
+
+        // Extract version from URL (e.g., v1.11.5 from https://github.com/SagerNet/sing-box/releases/download/v1.11.5)
+        private string ExtractVersionFromUrl(string url)
+        {
+            try
+            {
+                int lastSlashIndex = url.LastIndexOf('/');
+                if (lastSlashIndex != -1)
+                {
+                    string version = url.Substring(lastSlashIndex + 1);
+
+                    // Remove 'v' if it's at the beginning of the version
+                    if (version.StartsWith("v"))
+                    {
+                        version = version.Substring(1);
+                    }
+
+                    Debug.WriteLine("Extracted version (without 'v'): " + version);
+                    return version;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error extracting version: " + ex.Message);
+                return "";
+            }
+        }
+
+        // Get local Sing-box version (assumes it's stored in a file or accessible via command)
+        private string GetLocalSingboxVersion()
+        {
+            string singboxPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Assets",
+                "sing-box.exe"
+            );
+            Debug.WriteLine("Checking Sing-box path: " + singboxPath);
+
+            if (!File.Exists(singboxPath))
+            {
+                Debug.WriteLine("Sing-box executable not found.");
+                return "";
+            }
+
+            try
+            {
+                Process process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = singboxPath,
+                        Arguments = "version",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    },
+                };
+
+                Debug.WriteLine("Starting Sing-box process to get version...");
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd().Trim();
+                process.WaitForExit();
+
+                Debug.WriteLine("Sing-box output: " + output);
+
+                // Extract version number using regex
+                var versionMatch = Regex.Match(output, @"\d+\.\d+\.\d+(\.\d+)?");
+
+                if (versionMatch.Success)
+                {
+                    string localVersion = versionMatch.Value;
+
+                    // Ensure that the local version doesn't have a 'v' prefix
+                    if (localVersion.StartsWith("v"))
+                    {
+                        localVersion = localVersion.Substring(1);
+                    }
+
+                    Debug.WriteLine("Local version (without 'v'): " + localVersion);
+                    return localVersion;
+                }
+                else
+                {
+                    Debug.WriteLine("Version not found in output.");
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in GetLocalSingboxVersion: " + ex.Message);
+                Debug.WriteLine("Stack Trace: " + ex.StackTrace);
+                return "";
+            }
         }
     }
 }
